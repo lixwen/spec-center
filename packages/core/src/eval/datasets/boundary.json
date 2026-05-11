@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bnd-001",
+    "category": "boundary",
+    "input": "今天上海天气怎么样？顺便推荐一家火锅店。",
+    "expected": {
+      "tools_used": [],
+      "should_not_contain": ["get_spec_content", "get_change", "vector_search"],
+      "max_rounds": 3
+    }
+  },
+  {
+    "id": "bnd-002",
+    "category": "boundary",
+    "input": "查询 spec_id 为 spec_DOES_NOT_EXIST_999 的完整正文，如果不存在请明确说明。",
+    "expected": {
+      "tools_used": ["get_spec_content"],
+      "keywords": ["不存在", "not found"],
+      "max_rounds": 4
+    }
+  },
+  {
+    "id": "bnd-003",
+    "category": "boundary",
+    "input": "change_id 写错了：chg________ （全是下划线），系统应该怎么拒绝或提示？",
+    "expected": {
+      "tools_used": ["get_change"],
+      "should_not_contain": ["捏造", "伪造数据"],
+      "max_rounds": 4
+    }
+  }
+]

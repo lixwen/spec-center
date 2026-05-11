@@ -1,0 +1,16 @@
+node_modules
+.next
+dist
+dist-worker
+.git
+.gitignore
+.cursor
+.codex
+.venv
+openspec
+tests
+*.md
+!README.md
+.env
+.env.*
+!.env.example

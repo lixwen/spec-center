@@ -1,0 +1,40 @@
+[
+  {
+    "id": "chg-q-001",
+    "category": "change-query",
+    "input": "查看变更 CHG-2026-00001 的详情，包括标题、状态和关联的 spec 列表。",
+    "expected": {
+      "tools_used": ["get_change"],
+      "keywords": ["CHG-2026-00001", "变更"]
+    }
+  },
+  {
+    "id": "chg-q-002",
+    "category": "change-query",
+    "input": "我想知道这个 sprint 里还有哪些进行中的 change，先用搜索缩小范围再逐个打开详情。",
+    "context": { "projectIds": ["proj_alpha"] },
+    "expected": {
+      "tools_used": ["search_specs", "get_change"],
+      "keywords": ["sprint", "change"],
+      "max_rounds": 8
+    }
+  },
+  {
+    "id": "chg-q-003",
+    "category": "change-query",
+    "input": "根据 change_id chg_7f2a9c 拉取完整信息，并说明当前评审会话是否已创建。",
+    "expected": {
+      "tools_used": ["get_change"],
+      "keywords": ["评审", "chg_7f2a9c"]
+    }
+  },
+  {
+    "id": "chg-q-004",
+    "category": "change-query",
+    "input": "帮我在全文检索里找提到「agent-evaluation」的 spec，然后判断它和哪个 change 最相关。",
+    "expected": {
+      "tools_used": ["search_specs", "get_change"],
+      "keywords": ["agent-evaluation"]
+    }
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "rev-001",
+    "category": "review-analysis",
+    "input": "评审会话 rs_2026_042 的简报是什么？重点列出待决问题与风险。",
+    "expected": {
+      "tools_used": ["get_review_brief", "detect_spec_issues"],
+      "keywords": ["评审", "风险"],
+      "max_rounds": 8
+    }
+  },
+  {
+    "id": "rev-002",
+    "category": "review-analysis",
+    "input": "结合当前评审会话简报，检查 spec_s_auth 与 spec_s_session 的交叉一致性问题，并对单份 spec 做缺陷扫描。",
+    "expected": {
+      "tools_used": ["get_review_brief", "detect_cross_spec_issues", "detect_spec_issues"],
+      "keywords": ["交叉", "一致性"],
+      "max_rounds": 10
+    }
+  },
+  {
+    "id": "rev-003",
+    "category": "review-analysis",
+    "input": "请先拉取 CHG-2026-00012 对应评审简报，再用跨 spec 检测工具看是否与其他 capability 的条款冲突。",
+    "expected": {
+      "tools_used": ["get_review_brief", "detect_cross_spec_issues"],
+      "keywords": ["CHG-2026-00012", "冲突"]
+    }
+  }
+]

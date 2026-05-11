@@ -1,0 +1,32 @@
+[
+  {
+    "id": "kb-001",
+    "category": "knowledge-search",
+    "input": "我们知识库里有没有说明「如何把 OpenSpec change 同步到 Spec Center」的操作步骤？用语义检索帮找最贴近的三条。",
+    "expected": {
+      "tools_used": ["vector_search"],
+      "keywords": ["OpenSpec", "同步", "知识库"],
+      "max_rounds": 6
+    }
+  },
+  {
+    "id": "kb-002",
+    "category": "knowledge-search",
+    "input": "不记得具体文档名了，帮我从向量库里找解释 Qdrant 集合维度和 chunk 策略的内部说明。",
+    "expected": {
+      "tools_used": ["vector_search"],
+      "keywords": ["Qdrant", "chunk"]
+    }
+  },
+  {
+    "id": "kb-003",
+    "category": "knowledge-search",
+    "input": "新人问：Spec Center 的 RAG 回答会不会引用已过期的种子数据？请检索内部 FAQ 再总结结论。",
+    "context": { "projectIds": ["proj_platform"] },
+    "expected": {
+      "tools_used": ["vector_search"],
+      "keywords": ["RAG", "FAQ"],
+      "max_rounds": 8
+    }
+  }
+]

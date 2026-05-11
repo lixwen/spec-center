@@ -1,0 +1,1 @@
+new MutationObserver(function(){document.querySelectorAll('a[href$="/logout"]').forEach(function(a){if(!a._p){a._p=1;a.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();window.location.href=a.href},true)}})}).observe(document.body||document.documentElement,{childList:true,subtree:true})

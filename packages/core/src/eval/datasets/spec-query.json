@@ -1,0 +1,42 @@
+[
+  {
+    "id": "spec-q-001",
+    "category": "spec-query",
+    "input": "请帮我查看 capability 为 user-auth 的 spec 的正文内容，只需要最新工作版本。",
+    "context": { "projectIds": ["proj_alpha"] },
+    "expected": {
+      "tools_used": ["get_spec_content"],
+      "keywords": ["user-auth", "spec", "markdown"],
+      "max_rounds": 5
+    }
+  },
+  {
+    "id": "spec-q-002",
+    "category": "spec-query",
+    "input": "在仓库里全文搜索包含「单点登录」的 spec 片段，我想知道哪些文档提到过 SAML。",
+    "expected": {
+      "tools_used": ["search_specs"],
+      "keywords": ["单点登录", "SAML", "搜索"]
+    }
+  },
+  {
+    "id": "spec-q-003",
+    "category": "spec-query",
+    "input": "先搜一下哪些 spec 提到了 payment-timeout，再把最相关那份的完整内容拉出来给我。",
+    "expected": {
+      "tools_used": ["search_specs", "get_spec_content"],
+      "keywords": ["payment-timeout"],
+      "max_rounds": 8
+    }
+  },
+  {
+    "id": "spec-q-004",
+    "category": "spec-query",
+    "input": "用户问：openspec 里 billing 相关的需求文档在哪？请给出可读的内容摘要。",
+    "context": { "projectIds": ["proj_billing"] },
+    "expected": {
+      "tools_used": ["search_specs", "get_spec_content"],
+      "keywords": ["billing", "需求"]
+    }
+  }
+]
