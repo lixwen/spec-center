@@ -2,7 +2,7 @@
 // Environment variables are injected by docker-compose.
 
 const dbName = process.env.MONGO_INITDB_DATABASE || "spec-center";
-const appUser = process.env.MONGO_APP_USERNAME || "openspec_app";
+const appUser = process.env.MONGO_APP_USERNAME || "sc_app";
 const appPass = process.env.MONGO_APP_PASSWORD;
 
 const appDb = db.getSiblingDB(dbName);

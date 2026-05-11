@@ -1,4 +1,4 @@
-export const localeCookieName = "openspec-locale";
+export const localeCookieName = "sc-locale";
 
 export const supportedLocales = ["en", "zh-CN"] as const;
 

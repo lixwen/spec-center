@@ -7,7 +7,7 @@ dist-worker
 .cursor
 .codex
 .venv
-openspec
+specs
 tests
 *.md
 !README.md

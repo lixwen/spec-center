@@ -14,5 +14,5 @@ package-lock.json
 tmp
 data/
 .codex/
-openspec/
+specs/
 .cursor/

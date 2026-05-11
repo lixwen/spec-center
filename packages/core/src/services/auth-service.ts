@@ -251,11 +251,11 @@ export async function ensureBootstrapAdmin() {
     return;
   }
 
-  const password = process.env.OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD;
-  const displayName = process.env.OPENSPEC_BOOTSTRAP_ADMIN_NAME ?? "Platform Admin";
-  const email = process.env.OPENSPEC_BOOTSTRAP_ADMIN_EMAIL;
+  const password = process.env.SC_BOOTSTRAP_ADMIN_PASSWORD;
+  const displayName = process.env.SC_BOOTSTRAP_ADMIN_NAME ?? "Platform Admin";
+  const email = process.env.SC_BOOTSTRAP_ADMIN_EMAIL;
   const username =
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_USERNAME ??
+    process.env.SC_BOOTSTRAP_ADMIN_USERNAME ??
     (email ? email.split("@")[0].replace(/[^a-z0-9_-]/gi, "").toLowerCase() : undefined);
 
   if (!username || !password) {

@@ -2,10 +2,10 @@
   {
     "id": "kb-001",
     "category": "knowledge-search",
-    "input": "我们知识库里有没有说明「如何把 OpenSpec change 同步到 Spec Center」的操作步骤？用语义检索帮找最贴近的三条。",
+    "input": "我们知识库里有没有说明「如何把 change 同步到 Spec Center」的操作步骤？用语义检索帮找最贴近的三条。",
     "expected": {
       "tools_used": ["vector_search"],
-      "keywords": ["OpenSpec", "同步", "知识库"],
+      "keywords": ["Spec Center", "同步", "知识库"],
       "max_rounds": 6
     }
   },

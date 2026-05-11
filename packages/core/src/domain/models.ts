@@ -102,7 +102,7 @@ export interface Change {
   created_at: string;
   updated_at: string;
   deleted_at?: string | null;
-  source_kind?: "runtime" | "seed" | "openspec_import";
+  source_kind?: "runtime" | "seed" | "sc_import";
   source_key?: string;
 }
 
@@ -122,7 +122,7 @@ export interface SpecUnit {
   review_status: SpecReviewStatus | null;
   last_synced_at: string | null;
   new_version_available?: boolean;
-  source_kind?: "runtime" | "seed" | "openspec_import";
+  source_kind?: "runtime" | "seed" | "sc_import";
   source_key?: string;
 }
 
@@ -139,7 +139,7 @@ export interface Snapshot {
     collected_at: string;
   };
   created_at: string;
-  source_kind?: "runtime" | "seed" | "openspec_import";
+  source_kind?: "runtime" | "seed" | "sc_import";
   source_key?: string;
 }
 

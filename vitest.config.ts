@@ -27,10 +27,10 @@ function loadDotenv(): Record<string, string> {
 
 const dotenv = loadDotenv();
 const testDb = "spec-center-test";
-const rootUser = process.env.MONGO_ROOT_USERNAME ?? dotenv.MONGO_ROOT_USERNAME ?? "openspec";
+const rootUser = process.env.MONGO_ROOT_USERNAME ?? dotenv.MONGO_ROOT_USERNAME ?? "sc";
 const rootPass = process.env.MONGO_ROOT_PASSWORD ?? dotenv.MONGO_ROOT_PASSWORD ?? "";
 const mongoUrl =
-  process.env.OPENSPEC_MONGODB_URL ??
+  process.env.SC_MONGODB_URL ??
   (rootPass
     ? `mongodb://${rootUser}:${rootPass}@127.0.0.1:27017/${testDb}?authSource=admin`
     : "mongodb://127.0.0.1:27017");
@@ -44,8 +44,8 @@ export default defineConfig({
   test: {
     include: ["packages/**/*.test.ts", "tests/**/*.test.ts"],
     env: {
-      OPENSPEC_MONGODB_DB: testDb,
-      OPENSPEC_MONGODB_URL: mongoUrl
+      SC_MONGODB_DB: testDb,
+      SC_MONGODB_URL: mongoUrl
     }
   }
 });

@@ -334,7 +334,7 @@ npm run eval -- --evaluator tool-selection
 - name: Run Agent Evaluation
   run: npm run eval -- --code-only
   env:
-    OPENSPEC_MONGODB_URL: ${{ secrets.MONGODB_URL }}
+    SC_MONGODB_URL: ${{ secrets.MONGODB_URL }}
     EVAL_PASS_THRESHOLD: "0.7"
 ```
 

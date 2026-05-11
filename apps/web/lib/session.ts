@@ -10,11 +10,11 @@ import {
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const authCookieName = "openspec-auth";
+export const authCookieName = "sc-auth";
 
 export const isSecureCookie =
-  process.env.OPENSPEC_COOKIE_SECURE != null
-    ? process.env.OPENSPEC_COOKIE_SECURE === "true"
+  process.env.SC_COOKIE_SECURE != null
+    ? process.env.SC_COOKIE_SECURE === "true"
     : process.env.NODE_ENV === "production";
 
 export type SessionUser = AuthenticatedUser & {

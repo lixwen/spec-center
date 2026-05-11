@@ -2,7 +2,7 @@ import { getActiveProject, listProjectCatalog, type AuthenticatedUser } from "@s
 import { cookies } from "next/headers";
 import type { Project } from "@spec-center/core";
 
-export const projectCookieName = "openspec-project";
+export const projectCookieName = "sc-project";
 
 export function selectAccessibleProject(projects: Project[], projectId?: string) {
   return projects.find((project) => project._id === projectId) ?? projects[0];

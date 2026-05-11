@@ -15,7 +15,7 @@ import { createId } from "../utils/id";
 import type { AITraceCollector } from "./ai-trace-collector";
 import type { EmbeddingTask, RagSource, RagChunk } from "../domain/models";
 
-const COLLECTION_NAME = "openspec_chunks";
+const COLLECTION_NAME = "sc_chunks";
 
 const logger = createLogger("rag-service");
 
@@ -238,7 +238,7 @@ export async function enqueueEmbeddingTask(
   });
 }
 
-const SYSTEM_PROMPT = `你是 OpenSpec Center 的知识助手。基于以下文档上下文回答用户问题。
+const SYSTEM_PROMPT = `你是 Spec Center 的知识助手。基于以下文档上下文回答用户问题。
 
 规则：
 - 只基于提供的上下文回答，不要编造信息

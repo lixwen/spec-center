@@ -70,7 +70,7 @@ docker compose up -d --build
 docker compose up -d mongo qdrant
 
 # Set local connection in .env
-# OPENSPEC_MONGODB_URL=mongodb://openspec_app:changeme_app@127.0.0.1:27017/spec-center?authSource=spec-center
+# SC_MONGODB_URL=mongodb://sc_app:changeme_app@127.0.0.1:27017/spec-center?authSource=spec-center
 # QDRANT_URL=http://localhost:6333
 
 # Install dependencies and start
@@ -98,9 +98,9 @@ npm run worker --workspace @spec-center/core
 | `AI_BASE_URL` | `https://openrouter.ai/api/v1` | OpenAI-compatible API base URL |
 | `AI_EMBEDDING_MODEL` | `intfloat/multilingual-e5-large` | Embedding model identifier |
 | `AI_CHAT_MODEL` | `anthropic/claude-sonnet-4` | Chat model identifier |
-| `OPENSPEC_JWT_SECRET` | Auto-generated in dev | JWT signing secret |
-| `OPENSPEC_BOOTSTRAP_ADMIN_USERNAME` | — | Auto-create admin on first start |
-| `OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD` | — | Admin password for bootstrap |
+| `SC_JWT_SECRET` | Auto-generated in dev | JWT signing secret |
+| `SC_BOOTSTRAP_ADMIN_USERNAME` | — | Auto-create admin on first start |
+| `SC_BOOTSTRAP_ADMIN_PASSWORD` | — | Admin password for bootstrap |
 
 ## Features
 

@@ -63,16 +63,16 @@ docker compose logs -f
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `MONGO_ROOT_USERNAME` | `openspec` | MongoDB root 用户名 |
-| `MONGO_APP_USERNAME` | `openspec_app` | 应用数据库用户名 |
-| `OPENSPEC_MONGODB_DB` | `spec-center` | 数据库名 |
+| `MONGO_ROOT_USERNAME` | `sc` | MongoDB root 用户名 |
+| `MONGO_APP_USERNAME` | `sc_app` | 应用数据库用户名 |
+| `SC_MONGODB_DB` | `spec-center` | 数据库名 |
 | `AI_BASE_URL` | `https://openrouter.ai/api/v1` | OpenAI 兼容 API 基地址 |
 | `AI_EMBEDDING_MODEL` | `intfloat/multilingual-e5-large` | Embedding 模型 |
 | `AI_CHAT_MODEL` | `anthropic/claude-sonnet-4` | Chat 模型 |
 | `AI_RERANK_MODEL` | `cohere/rerank-4-fast` | Rerank 模型（可选：`cohere/rerank-4-pro`、`cohere/rerank-v3.5`） |
 | `AI_RERANK_ENABLED` | `true` | 是否启用 RAG Rerank，设为 `false` 关闭 |
-| `OPENSPEC_JWT_SECRET` | 自动生成 | JWT 签名密钥 |
-| `OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD` | - | 首次启动自动创建管理员的密码 |
+| `SC_JWT_SECRET` | 自动生成 | JWT 签名密钥 |
+| `SC_BOOTSTRAP_ADMIN_PASSWORD` | - | 首次启动自动创建管理员的密码 |
 
 ## Dockerfile 构建流程
 
@@ -123,7 +123,7 @@ docker compose up -d mongo
 
 # 3. 将数据导入容器中的 MongoDB（使用 root 用户）
 mongorestore --host 127.0.0.1 --port 27017 \
-  -u openspec -p <MONGO_ROOT_PASSWORD> \
+  -u sc -p <MONGO_ROOT_PASSWORD> \
   --authenticationDatabase admin \
   --db spec-center ./backup/spec-center
 
@@ -144,7 +144,7 @@ docker compose restart web
 docker compose logs -f worker
 
 # 进入 MongoDB shell
-docker compose exec mongo mongosh -u openspec -p <MONGO_ROOT_PASSWORD>
+docker compose exec mongo mongosh -u sc -p <MONGO_ROOT_PASSWORD>
 
 # 停止所有服务（保留数据）
 docker compose down
@@ -162,7 +162,7 @@ docker compose down -v
 docker compose up -d mongo qdrant
 
 # 在 .env 中设置本地连接地址
-OPENSPEC_MONGODB_URL=mongodb://openspec_app:<MONGO_APP_PASSWORD>@127.0.0.1:27017/spec-center?authSource=spec-center
+SC_MONGODB_URL=mongodb://sc_app:<MONGO_APP_PASSWORD>@127.0.0.1:27017/spec-center?authSource=spec-center
 QDRANT_URL=http://localhost:6333
 
 # 启动 web

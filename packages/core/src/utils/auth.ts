@@ -33,21 +33,22 @@ function base64UrlDecode(value: string) {
 }
 
 function getJwtSecret() {
-  const secret = process.env.OPENSPEC_JWT_SECRET ?? process.env.JWT_SECRET;
+  const secret = process.env.SC_JWT_SECRET ?? process.env.JWT_SECRET;
   if (!secret && process.env.NODE_ENV !== "production") {
-    return "openspec-dev-secret";
+    return "sc-dev-secret";
   }
   if (!secret) {
-    throw new Error("Missing OPENSPEC_JWT_SECRET configuration.");
+    throw new Error("Missing SC_JWT_SECRET configuration.");
   }
   return secret;
 }
 
 export function getJwtTtlSeconds() {
-  const raw = process.env.OPENSPEC_JWT_TTL_SECONDS ?? process.env.JWT_TTL_SECONDS;
+  const raw =
+    process.env.SC_JWT_TTL_SECONDS ?? process.env.JWT_TTL_SECONDS;
   const parsed = raw ? Number(raw) : DEFAULT_JWT_TTL_SECONDS;
   if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error("Invalid OPENSPEC_JWT_TTL_SECONDS configuration.");
+    throw new Error("Invalid SC_JWT_TTL_SECONDS configuration.");
   }
   return parsed;
 }

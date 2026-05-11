@@ -25,10 +25,10 @@ import { sha256 } from "../packages/core/src/utils/hash";
 describe.sequential("auth service", () => {
   beforeEach(async () => {
     await seedDemoData();
-    delete process.env.OPENSPEC_BOOTSTRAP_ADMIN_EMAIL;
-    delete process.env.OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD;
-    delete process.env.OPENSPEC_BOOTSTRAP_ADMIN_NAME;
-    delete process.env.OPENSPEC_BOOTSTRAP_ADMIN_USERNAME;
+    delete process.env.SC_BOOTSTRAP_ADMIN_EMAIL;
+    delete process.env.SC_BOOTSTRAP_ADMIN_PASSWORD;
+    delete process.env.SC_BOOTSTRAP_ADMIN_NAME;
+    delete process.env.SC_BOOTSTRAP_ADMIN_USERNAME;
   });
 
   afterAll(async () => {
@@ -80,10 +80,10 @@ describe.sequential("auth service", () => {
 
   it("creates a bootstrap admin only when the user table is empty", async () => {
     await clearMongoDatabase();
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_USERNAME = "bootstrap";
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_EMAIL = "bootstrap@example.com";
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD = "password123";
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_NAME = "Bootstrap Admin";
+    process.env.SC_BOOTSTRAP_ADMIN_USERNAME = "bootstrap";
+    process.env.SC_BOOTSTRAP_ADMIN_EMAIL = "bootstrap@example.com";
+    process.env.SC_BOOTSTRAP_ADMIN_PASSWORD = "password123";
+    process.env.SC_BOOTSTRAP_ADMIN_NAME = "Bootstrap Admin";
 
     await ensureBootstrapAdmin();
     await ensureBootstrapAdmin();
@@ -96,10 +96,10 @@ describe.sequential("auth service", () => {
     expect(users[0].global_roles).toEqual(["platform_admin"]);
   });
 
-  it("derives bootstrap username from email when OPENSPEC_BOOTSTRAP_ADMIN_USERNAME is not set", async () => {
+  it("derives bootstrap username from email when SC_BOOTSTRAP_ADMIN_USERNAME is not set", async () => {
     await clearMongoDatabase();
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_EMAIL = "superadmin@example.com";
-    process.env.OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD = "password123";
+    process.env.SC_BOOTSTRAP_ADMIN_EMAIL = "superadmin@example.com";
+    process.env.SC_BOOTSTRAP_ADMIN_PASSWORD = "password123";
 
     await ensureBootstrapAdmin();
 
@@ -228,7 +228,7 @@ describe.sequential("auth service", () => {
       repo: "spec-center",
       branch: "feature/task-list",
       change_name: "task-list-refine",
-      path: "openspec/changes/task-list-refine/specs/task-list-review/spec.md",
+      path: "specs/changes/task-list-refine/specs/task-list-review/spec.md",
       type: "API",
       content: "# Task list review",
       content_hash: sha256("# Task list review"),
@@ -293,7 +293,7 @@ describe.sequential("auth service", () => {
       repo: "spec-center",
       branch: "feature/rbac",
       change_name: "rbac-test",
-      path: "openspec/changes/rbac-test/specs/rbac-test/spec.md",
+      path: "specs/changes/rbac-test/specs/rbac-test/spec.md",
       content: "# RBAC test",
       content_hash: sha256("# RBAC test"),
       commit_sha: "abc789",

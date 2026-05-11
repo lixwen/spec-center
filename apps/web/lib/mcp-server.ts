@@ -23,7 +23,7 @@ import {
   updateSpec,
   deleteChangeSpec,
   sha256,
-  upsertOpenSpecChangesFromPayload,
+  upsertChangesFromPayload,
   type AuthenticatedUser,
   type ImportPayload
 } from "@spec-center/core";
@@ -46,7 +46,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   server.registerTool(
     "ask",
     {
-      title: "Ask OpenSpec Center",
+      title: "Ask Spec Center",
       description:
         "Ask a question about the project. Uses RAG (vector search + LLM) to answer based on specs, changes and review comments.",
       inputSchema: {
@@ -88,7 +88,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   server.registerTool(
     "search",
     {
-      title: "Search OpenSpec Center",
+      title: "Search Spec Center",
       description:
         "Full-text search across changes, product specs and review sessions.",
       inputSchema: {
@@ -753,7 +753,7 @@ export function createMcpServer(user: AuthenticatedUser) {
         const repo = repoOverride ?? binding?.repo ?? "local";
         const branch = branchOverride ?? binding?.branch ?? "main";
         const changeName = binding?.change_name ?? change_id;
-        const path = `openspec/changes/${changeName}/specs/${capability}/spec.md`;
+        const path = `specs/changes/${changeName}/specs/${capability}/spec.md`;
 
         const result = await syncUpload({
           project_id: projectId,
@@ -846,7 +846,7 @@ export function createMcpServer(user: AuthenticatedUser) {
           repo,
           branch,
           change_name: changeName,
-          path: `openspec/changes/${changeName}/specs/${s.capability}/spec.md`,
+          path: `specs/changes/${changeName}/specs/${s.capability}/spec.md`,
           content: s.content,
           content_hash: sha256(s.content),
           commit_sha: "mcp-batch-upload",
@@ -914,7 +914,7 @@ export function createMcpServer(user: AuthenticatedUser) {
           repo,
           branch: "main",
           change_name: null,
-          path: `openspec/specs/${s.capability}/spec.md`,
+          path: `specs/${s.capability}/spec.md`,
           content: s.content,
           content_hash: sha256(s.content),
           commit_sha: "mcp-batch-upload",
@@ -945,9 +945,9 @@ export function createMcpServer(user: AuthenticatedUser) {
   server.registerTool(
     "import_changes",
     {
-      title: "Import OpenSpec Changes",
+      title: "Import Changes",
       description:
-        "Full import of an OpenSpec repository structure (changes + product specs). Uses upsert logic — existing data is updated, not duplicated.",
+        "Full import of a repository structure (changes + product specs). Uses upsert logic — existing data is updated, not duplicated.",
       inputSchema: {
         changes: z
           .array(
@@ -1000,7 +1000,7 @@ export function createMcpServer(user: AuthenticatedUser) {
           product_specs: product_specs ?? []
         };
 
-        const result = await upsertOpenSpecChangesFromPayload(payload);
+        const result = await upsertChangesFromPayload(payload);
         const text = [
           `Import complete.`,
           "",
@@ -1071,11 +1071,11 @@ export function createMcpServer(user: AuthenticatedUser) {
   // ── Resource: guide ──────────────────────────────────────────────────
   server.registerResource(
     "guide",
-    "openspec://guide",
+    "sc://guide",
     {
-      title: "OpenSpec Center Guide",
+      title: "Spec Center Guide",
       description:
-        "Usage guide for OpenSpec Center MCP tools and resources. Read this to understand available capabilities and workflows.",
+        "Usage guide for Spec Center MCP tools and resources. Read this to understand available capabilities and workflows.",
       mimeType: "text/markdown"
     },
     async (uri) => {
@@ -1093,7 +1093,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   // ── Resource: projects ─────────────────────────────────────────────────
   server.registerResource(
     "projects",
-    "openspec://projects",
+    "sc://projects",
     {
       title: "Project List",
       description: "All projects accessible to the current user.",
@@ -1125,7 +1125,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   // ── Resource template: project overview ────────────────────────────────
   server.registerResource(
     "project-overview",
-    new ResourceTemplate("openspec://project/{id}/overview", { list: undefined }),
+    new ResourceTemplate("sc://project/{id}/overview", { list: undefined }),
     {
       title: "Project Overview",
       description: "Overview metrics for a project.",
@@ -1160,7 +1160,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   // ── Resource template: product specs list ──────────────────────────────
   server.registerResource(
     "project-product-specs",
-    new ResourceTemplate("openspec://project/{id}/product-specs", { list: undefined }),
+    new ResourceTemplate("sc://project/{id}/product-specs", { list: undefined }),
     {
       title: "Product Specs",
       description: "Product spec units for a project.",
@@ -1193,7 +1193,7 @@ export function createMcpServer(user: AuthenticatedUser) {
   return server;
 }
 
-const GUIDE_CONTENT = `# OpenSpec Center 交互指南
+const GUIDE_CONTENT = `# Spec Center 交互指南
 
 通过 spec-center MCP server 与平台交互，支持多角色协作。
 
@@ -1227,7 +1227,7 @@ const GUIDE_CONTENT = `# OpenSpec Center 交互指南
 | upload_spec | 上传单个 spec.md 到指定 change（可选 repo、branch） |
 | batch_upload_specs | 批量上传 change 下的 spec.md（可选 repo、branch） |
 | batch_upload_product_specs | 批量上传 product specs（可选 repo） |
-| import_changes | 全量导入 openspec 目录结构（changes + product specs） |
+| import_changes | 全量导入 specs 目录结构（changes + product specs） |
 | get_sync_status | 查看 change 同步状态 |
 
 > **关键约束：所有上传/导入操作只处理 spec.md 文件。** design.md、tasks.md、proposal.md 等其他文件不属于 spec 内容，禁止作为 spec 上传或导入。
@@ -1243,10 +1243,10 @@ const GUIDE_CONTENT = `# OpenSpec Center 交互指南
 
 | Resource URI | 用途 |
 |-------------|------|
-| openspec://projects | 当前用户可访问的项目列表 |
-| openspec://project/{id}/overview | 项目概览指标 |
-| openspec://project/{id}/product-specs | 项目的 product spec 列表 |
-| openspec://guide | 本使用指南 |
+| sc://projects | 当前用户可访问的项目列表 |
+| sc://project/{id}/overview | 项目概览指标 |
+| sc://project/{id}/product-specs | 项目的 product spec 列表 |
+| sc://guide | 本使用指南 |
 
 ---
 
@@ -1271,7 +1271,7 @@ const GUIDE_CONTENT = `# OpenSpec Center 交互指南
 
 1. get_change（传 change_id）→ 获取详情，提取关联 spec ID
 2. get_spec（传 spec_id）→ 获取 spec 完整 markdown 内容
-3. 如果本地有 openspec/ 目录，将内容写入 openspec/specs/<capability>/spec.md
+3. 如果本地有 specs/ 目录，将内容写入 specs/<capability>/spec.md
 
 ### 同步本地 Spec 到 Spec Center
 
@@ -1291,12 +1291,12 @@ const GUIDE_CONTENT = `# OpenSpec Center 交互指南
 - upload_spec：单个 spec 上传，传入 change_id、capability、content（**只传 spec.md 的内容**），可选 repo、branch
 - batch_upload_specs：批量上传 change specs，传入 change_id 和 specs[]（每项含 capability + content，**content 只取 spec.md**），可选 repo、branch
 - batch_upload_product_specs：批量上传 product specs，传入 specs[]，可选 repo
-- import_changes：全量导入 openspec 目录结构，传入完整 payload。**spec_files 只包含 spec.md 文件，不要包含 design.md、tasks.md 等其他文件**。导入前先用 list_changes 检查已有 change，避免重复导入
+- import_changes：全量导入 specs 目录结构，传入完整 payload。**spec_files 只包含 spec.md 文件，不要包含 design.md、tasks.md 等其他文件**。导入前先用 list_changes 检查已有 change，避免重复导入
 - get_sync_status：查看指定 change 的同步状态
 
 注意：capability 名称是 spec 的唯一标识（同一 change 下不可重复）。上传时确保 capability 使用一致的 kebab-case 命名。
 
-**只上传 spec.md**：每个 capability 目录下可能包含 spec.md、design.md、tasks.md 等多个文件，但只有 spec.md 是 spec 内容。读取文件时只读取 openspec/specs/<capability>/spec.md，忽略同目录下的其他文件。
+**只上传 spec.md**：每个 capability 目录下可能包含 spec.md、design.md、tasks.md 等多个文件，但只有 spec.md 是 spec 内容。读取文件时只读取 specs/<capability>/spec.md，忽略同目录下的其他文件。
 
 ### 更新 Spec
 
@@ -1329,9 +1329,9 @@ const GUIDE_CONTENT = `# OpenSpec Center 交互指南
 ### 项目信息
 
 通过 MCP resource 获取（无需调用 tool）：
-- openspec://projects：项目列表
-- openspec://project/{id}/overview：项目概览
-- openspec://project/{id}/product-specs：product spec 列表
+- sc://projects：项目列表
+- sc://project/{id}/overview：项目概览
+- sc://project/{id}/product-specs：product spec 列表
 
 ---
 

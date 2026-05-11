@@ -39,7 +39,7 @@ import { createLogger } from "../utils/logger";
 
 const logger = createLogger("agent-service");
 
-const COLLECTION = "openspec_chunks";
+const COLLECTION = "sc_chunks";
 const MAX_AGENT_ROUNDS = 20;
 const MAX_TOOL_RESULT_CHARS = 80_000;
 const AGENT_TIMEOUT_MS = 300_000;
@@ -88,7 +88,7 @@ export interface AgentStreamEvent {
   updatedSummary?: string;
 }
 
-const AGENT_SYSTEM_PROMPT = `你是 OpenSpec Center 的 Agent 助手，结合检索到的文档片段与可调用的工具，帮助用户分析 Change、Spec 与实现风险。
+const AGENT_SYSTEM_PROMPT = `你是 Spec Center 的 Agent 助手，结合检索到的文档片段与可调用的工具，帮助用户分析 Change、Spec 与实现风险。
 
 分析框架（按需使用）：
 1) 对接风险分析：API 契约是否对齐（路径、方法、字段名与类型、必填/可选、默认值）；请求/响应与错误码；幂等与重试；状态机与异步回调；版本兼容与弃用策略。

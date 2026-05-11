@@ -22,7 +22,7 @@ Two credential types coexist; the middleware auto-dispatches based on token pref
 
 | Type | Format | Lifetime | Use case |
 |------|--------|----------|----------|
-| JWT | `eyJ…` (HS256) | 8 hours | Browser sessions via `openspec-auth` cookie |
+| JWT | `eyJ…` (HS256) | 8 hours | Browser sessions via `sc-auth` cookie |
 | API Token | `osc_` + 40 hex chars | No expiry (manual revoke) | CI/CD, API integrations |
 
 - API Tokens are created per-user via `POST /api/api-tokens` or the Settings → API Tokens UI.
@@ -43,4 +43,4 @@ npm run build
 
 - Default connection: `mongodb://127.0.0.1:27017`
 - Default database: `spec-center`
-- Override with `OPENSPEC_MONGODB_URL` and `OPENSPEC_MONGODB_DB`
+- Override with `SC_MONGODB_URL` and `SC_MONGODB_DB`

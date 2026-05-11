@@ -153,7 +153,7 @@ describe("Agent loop (queryRagStream)", () => {
       assistantMessage("Direct answer without tools.")
     );
 
-    const events = await collectStream("What is OpenSpec?", ["proj_1"]);
+    const events = await collectStream("What is Spec Center?", ["proj_1"]);
     const types = events.map((e) => e.type);
 
     expect(types.filter((t) => t === "thinking")).toHaveLength(0);

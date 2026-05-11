@@ -7,12 +7,9 @@ import {
   getProject
 } from "../packages/core/src/data/mongo";
 import {
-  importOpenSpecChanges,
-  resetImportedOpenSpecChanges,
-  syncOpenSpecRepository,
-  upsertOpenSpecChangesFromPayload,
+  upsertChangesFromPayload,
   type ImportPayload
-} from "../packages/core/src/data/openspec-change-import";
+} from "../packages/core/src/data/change-import";
 import { seedDemoData } from "../packages/core/src/data/mongo-seed";
 import {
   approveChange,
@@ -82,7 +79,7 @@ describe("center service", () => {
       repo: "spec-center",
       branch: "main",
       change_name: null,
-      path: "openspec/specs/review-engine/spec.md",
+      path: "specs/review-engine/spec.md",
       content: "# Review Engine",
       content_hash: sha256("# Review Engine"),
       commit_sha: "abc123",
@@ -102,7 +99,7 @@ describe("center service", () => {
       repo: "spec-center",
       branch: "feature/task-list",
       change_name: "task-list-refine",
-      path: "openspec/changes/task-list-refine/specs/task-list-review/spec.md",
+      path: "specs/changes/task-list-refine/specs/task-list-review/spec.md",
       content: "# Task list review",
       content_hash: sha256("# Task list review"),
       commit_sha: "def456",
@@ -186,46 +183,6 @@ describe("center service", () => {
     expect(knowledge.snapshots.length).toBeGreaterThan(1);
     expect(knowledge.history.length).toBeGreaterThan(0);
     expect(knowledge.history.some((entry) => entry.change_id === "CHG-2026-00123")).toBe(true);
-  });
-
-  it("imports local openspec change directories into mongo for demo use", async () => {
-    const result = await importOpenSpecChanges(process.cwd());
-
-    expect(result.imported_change_count).toBeGreaterThan(1);
-    expect((await getChange("phase-8-mongo-backed-data"))?.source_kind).toBe("openspec_import");
-    expect((await getChange("2026-04-01-phase-1-core-loop"))?.status).toBe("archived");
-
-    const importedSpecs = await listSpecsForChange("phase-8-mongo-backed-data");
-    expect(importedSpecs.length).toBeGreaterThan(0);
-    expect(importedSpecs[0].source_kind).toBe("openspec_import");
-
-    const snapshots = await getSpecSnapshots(importedSpecs[0]._id);
-    expect(snapshots.length).toBeGreaterThan(0);
-    expect(snapshots[0].source_kind).toBe("openspec_import");
-  });
-
-  it("resets imported openspec change records without deleting seed data", async () => {
-    await importOpenSpecChanges(process.cwd());
-
-    const reset = await resetImportedOpenSpecChanges();
-
-    expect(reset.deleted_changes).toBeGreaterThan(0);
-    expect(await getChange("phase-7-shell-functional-completion")).toBeUndefined();
-    expect(await getChange("CHG-2026-00123")).toBeTruthy();
-  });
-
-  it("syncs repository-backed changes and product specs from real files", async () => {
-    const result = await syncOpenSpecRepository(process.cwd());
-
-    expect(result.imported_change_count).toBeGreaterThan(1);
-    expect(result.imported_product_spec_count).toBe(12);
-    expect(await getChange("CHG-2026-00123")).toBeTruthy();
-
-    const productSpecs = await listProductSpecs();
-    expect(productSpecs.some((spec) => spec._id === "product--change-dashboard")).toBe(true);
-
-    const knowledge = await getProductKnowledge("product--change-dashboard");
-    expect(knowledge.spec.path).toBe("openspec/specs/change-dashboard/spec.md");
   });
 
   it("scopes change and product queries to the active project", async () => {
@@ -319,20 +276,13 @@ describe("center service", () => {
         repo: "orbit-payments",
         branch: "main",
         change_name: null,
-        path: "openspec/specs/payment-gateway/spec.md",
+        path: "specs/payment-gateway/spec.md",
         content: "# Orbit Product Spec",
         content_hash: sha256("# Orbit Product Spec"),
         commit_sha: "orbit999",
         collected_at: "2026-04-02T08:00:00Z"
       })
     ).rejects.toThrow(/conflicts with explicit project/);
-  });
-
-  it("imports repository documents into an explicitly selected project", async () => {
-    const result = await importOpenSpecChanges(process.cwd(), "project-orbit");
-
-    expect(result.imported_change_count).toBeGreaterThan(1);
-    expect((await getChange("phase-8-mongo-backed-data"))?.project_id).toBe("project-orbit");
   });
 
   it("creates a project with normalized slug and empty repo_bindings", async () => {
@@ -442,7 +392,7 @@ describe("center service", () => {
       repo: "spec-center",
       branch: "feature/task-list",
       change_name: "task-list-refine",
-      path: "openspec/changes/task-list-refine/specs/spec-level-test/spec.md",
+      path: "specs/changes/task-list-refine/specs/spec-level-test/spec.md",
       content: "# Spec Level Test",
       content_hash: sha256("# Spec Level Test"),
       commit_sha: "spectest1",
@@ -481,16 +431,16 @@ describe("center service", () => {
           branch: "main",
           proposal_content: "## Why\nTest feature A.",
           spec_files: [
-            { path: "openspec/changes/upsert-feature-a/specs/auth/spec.md", content: "# Auth spec v1", timestamp: "2026-04-01T00:00:00Z" }
+            { path: "specs/changes/upsert-feature-a/specs/auth/spec.md", content: "# Auth spec v1", timestamp: "2026-04-01T00:00:00Z" }
           ]
         }
       ],
       product_specs: [
-        { path: "openspec/specs/billing/spec.md", content: "# Billing spec v1", timestamp: "2026-04-01T00:00:00Z" }
+        { path: "specs/billing/spec.md", content: "# Billing spec v1", timestamp: "2026-04-01T00:00:00Z" }
       ]
     };
 
-    const result = await upsertOpenSpecChangesFromPayload(payload);
+    const result = await upsertChangesFromPayload(payload);
 
     expect(result.created_changes).toBe(1);
     expect(result.created_specs).toBe(2);
@@ -511,14 +461,14 @@ describe("center service", () => {
           branch: "main",
           proposal_content: null,
           spec_files: [
-            { path: "openspec/changes/upsert-feature-b/specs/data/spec.md", content: "# Data spec v1", timestamp: "2026-04-01T00:00:00Z" }
+            { path: "specs/changes/upsert-feature-b/specs/data/spec.md", content: "# Data spec v1", timestamp: "2026-04-01T00:00:00Z" }
           ]
         }
       ],
       product_specs: []
     };
 
-    await upsertOpenSpecChangesFromPayload(payload);
+    await upsertChangesFromPayload(payload);
 
     const updatedPayload: ImportPayload = {
       ...payload,
@@ -526,12 +476,12 @@ describe("center service", () => {
         {
           ...payload.changes[0],
           spec_files: [
-            { path: "openspec/changes/upsert-feature-b/specs/data/spec.md", content: "# Data spec v1", timestamp: "2026-04-02T00:00:00Z" }
+            { path: "specs/changes/upsert-feature-b/specs/data/spec.md", content: "# Data spec v1", timestamp: "2026-04-02T00:00:00Z" }
           ]
         }
       ]
     };
-    const result = await upsertOpenSpecChangesFromPayload(updatedPayload);
+    const result = await upsertChangesFromPayload(updatedPayload);
 
     expect(result.created_changes).toBe(0);
     expect(result.updated_changes).toBe(1);
@@ -553,11 +503,11 @@ describe("center service", () => {
       product_specs: []
     };
 
-    await upsertOpenSpecChangesFromPayload(payload);
+    await upsertChangesFromPayload(payload);
     expect((await getChange("upsert-will-archive"))?.status).toBe("draft");
 
     const emptyPayload: ImportPayload = { repo: "test-repo", changes: [], product_specs: [] };
-    const result = await upsertOpenSpecChangesFromPayload(emptyPayload);
+    const result = await upsertChangesFromPayload(emptyPayload);
 
     expect(result.archived_changes).toBeGreaterThanOrEqual(1);
     expect((await getChange("upsert-will-archive"))?.status).toBe("archived");
@@ -572,13 +522,13 @@ describe("center service", () => {
       product_specs: []
     };
 
-    await upsertOpenSpecChangesFromPayload(payload);
+    await upsertChangesFromPayload(payload);
 
     const emptyPayload: ImportPayload = { repo: "test-repo", changes: [], product_specs: [] };
-    await upsertOpenSpecChangesFromPayload(emptyPayload);
+    await upsertChangesFromPayload(emptyPayload);
     expect((await getChange("upsert-restore"))?.status).toBe("archived");
 
-    const result = await upsertOpenSpecChangesFromPayload(payload);
+    const result = await upsertChangesFromPayload(payload);
     expect(result.updated_changes).toBe(1);
     expect((await getChange("upsert-restore"))?.status).toBe("draft");
   });
@@ -593,14 +543,14 @@ describe("center service", () => {
           branch: "main",
           proposal_content: null,
           spec_files: [
-            { path: "openspec/changes/upsert-hash-test/specs/api/spec.md", content: "# API v1", timestamp: "2026-04-01T00:00:00Z" }
+            { path: "specs/changes/upsert-hash-test/specs/api/spec.md", content: "# API v1", timestamp: "2026-04-01T00:00:00Z" }
           ]
         }
       ],
       product_specs: []
     };
 
-    await upsertOpenSpecChangesFromPayload(payload);
+    await upsertChangesFromPayload(payload);
 
     const v2Payload: ImportPayload = {
       ...payload,
@@ -608,13 +558,13 @@ describe("center service", () => {
         {
           ...payload.changes[0],
           spec_files: [
-            { path: "openspec/changes/upsert-hash-test/specs/api/spec.md", content: "# API v2 - updated", timestamp: "2026-04-02T00:00:00Z" }
+            { path: "specs/changes/upsert-hash-test/specs/api/spec.md", content: "# API v2 - updated", timestamp: "2026-04-02T00:00:00Z" }
           ]
         }
       ]
     };
 
-    const result = await upsertOpenSpecChangesFromPayload(v2Payload);
+    const result = await upsertChangesFromPayload(v2Payload);
 
     expect(result.updated_snapshots).toBe(1);
     expect(result.skipped_specs).toBe(0);
@@ -739,7 +689,7 @@ describe("center service", () => {
       await skipReview(change._id);
 
       await expect(deleteChange(change._id)).rejects.toThrow(
-        "Only draft changes can be deleted."
+        "Only draft or archived changes can be deleted."
       );
     });
 

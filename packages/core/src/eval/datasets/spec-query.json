@@ -32,7 +32,7 @@
   {
     "id": "spec-q-004",
     "category": "spec-query",
-    "input": "用户问：openspec 里 billing 相关的需求文档在哪？请给出可读的内容摘要。",
+    "input": "用户问：Spec Center 里 billing 相关的需求文档在哪？请给出可读的内容摘要。",
     "context": { "projectIds": ["proj_billing"] },
     "expected": {
       "tools_used": ["search_specs", "get_spec_content"],

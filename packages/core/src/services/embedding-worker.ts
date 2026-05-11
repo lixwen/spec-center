@@ -5,7 +5,7 @@ import { createId } from "../utils/id";
 import { processEmbeddingTask } from "./rag-service";
 import { createLogger } from "../utils/logger";
 
-const COLLECTION_NAME = "openspec_chunks";
+const COLLECTION_NAME = "sc_chunks";
 const DEFAULT_INTERVAL_MS = 5000;
 const MAX_RETRIES = 3;
 

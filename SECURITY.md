@@ -28,7 +28,7 @@ This policy covers:
 ## Best Practices for Deployment
 
 - Always change default passwords in `.env` before deploying
-- Set a strong `OPENSPEC_JWT_SECRET` in production
-- Enable `OPENSPEC_COOKIE_SECURE=true` when using HTTPS
+- Set a strong `SC_JWT_SECRET` in production
+- Enable `SC_COOKIE_SECURE=true` when using HTTPS
 - Restrict network access to MongoDB and Qdrant ports
 - Keep Docker images updated to latest patch versions

@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in OpenSpec Center
+description: Report a bug in Spec Center
 labels: ["bug"]
 body:
   - type: textarea

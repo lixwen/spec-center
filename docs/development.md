@@ -31,7 +31,7 @@ AI_BASE_URL=https://openrouter.ai/api/v1   # or any OpenAI-compatible URL
 For local MongoDB access, uncomment:
 
 ```bash
-OPENSPEC_MONGODB_URL=mongodb://openspec_app:changeme_app@127.0.0.1:27017/spec-center?authSource=spec-center
+SC_MONGODB_URL=mongodb://sc_app:changeme_app@127.0.0.1:27017/spec-center?authSource=spec-center
 QDRANT_URL=http://localhost:6333
 ```
 
@@ -106,12 +106,12 @@ AI_API_KEY=ollama
 
 Two token types are supported:
 
-- **JWT** (`eyJ…`) — 8-hour browser sessions via `openspec-auth` cookie
+- **JWT** (`eyJ…`) — 8-hour browser sessions via `sc-auth` cookie
 - **API Token** (`osc_*`) — long-lived tokens for API access
 
 To bootstrap an admin user on first start, set in `.env`:
 
 ```bash
-OPENSPEC_BOOTSTRAP_ADMIN_USERNAME=admin
-OPENSPEC_BOOTSTRAP_ADMIN_PASSWORD=your-password
+SC_BOOTSTRAP_ADMIN_USERNAME=admin
+SC_BOOTSTRAP_ADMIN_PASSWORD=your-password
 ```
