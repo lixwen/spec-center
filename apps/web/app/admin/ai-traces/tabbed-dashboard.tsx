@@ -1,6 +1,6 @@
 "use client";
 
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import { SectionHeading } from "../../../components/ui";
 import { AdminAiTracesDashboard } from "./dashboard";
 import { EvalConfigTab } from "./eval-config-tab";
@@ -8,25 +8,21 @@ import { EvalDashboard } from "./eval-dashboard";
 import { EvalDatasetsTab } from "./eval-datasets-tab";
 import type { getMessages } from "../../../lib/i18n";
 
-const EvalGuideTab = lazy(() => import("./eval-guide-tab"));
-
 type TracesLabels = ReturnType<typeof getMessages>["aiTracesAdmin"];
 type EvalLabels = ReturnType<typeof getMessages>["evalAdmin"];
 
-type TabKey = "traces" | "eval" | "datasets" | "config" | "guide";
+type TabKey = "traces" | "eval" | "datasets" | "config";
 
 export function TabbedDashboard({
   tracesLabels,
   evalLabels,
   totalSuffix,
-  workingLabel,
-  guideMarkdown
+  workingLabel
 }: {
   tracesLabels: TracesLabels;
   evalLabels: EvalLabels;
   totalSuffix: string;
   workingLabel: string;
-  guideMarkdown?: string;
 }) {
   const [tab, setTab] = useState<TabKey>("traces");
 
@@ -54,8 +50,7 @@ export function TabbedDashboard({
               ["traces", evalLabels.tabTraces],
               ["eval", evalLabels.tabEval],
               ["datasets", evalLabels.tabDatasets],
-              ["config", evalLabels.tabConfig],
-              ...(guideMarkdown ? ([["guide", evalLabels.tabGuide]] as const) : [])
+              ["config", evalLabels.tabConfig]
             ] as const
           ).map(([key, label]) => (
             <button
@@ -82,11 +77,6 @@ export function TabbedDashboard({
       {tab === "eval" ? <EvalDashboard labels={evalLabels} /> : null}
       {tab === "datasets" ? <EvalDatasetsTab labels={evalLabels} /> : null}
       {tab === "config" ? <EvalConfigTab labels={evalLabels} workingLabel={workingLabel} /> : null}
-      {tab === "guide" && guideMarkdown ? (
-        <Suspense fallback={<p className="text-sm text-slate-400">…</p>}>
-          <EvalGuideTab markdown={guideMarkdown} />
-        </Suspense>
-      ) : null}
     </div>
   );
 }
