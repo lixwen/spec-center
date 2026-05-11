@@ -527,7 +527,26 @@ export function AskClient({
         let recordedTtft = false;
         let streamEndStatus: string | undefined;
 
-        postMetrics = async () => {};
+        postMetrics = async (completed: boolean) => {
+          const payload: Record<string, unknown> = {
+            taskId,
+            streamDurationMs: Date.now() - streamOpenedAt,
+            completed
+          };
+          if (typeof ttftMs === "number") {
+            payload.ttftMs = ttftMs;
+          }
+          try {
+            await fetch("/api/ai-traces/client-metrics", {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+          } catch {
+            /* ignore */
+          }
+        };
 
         const decoder = new TextDecoder();
         let buffer = "";

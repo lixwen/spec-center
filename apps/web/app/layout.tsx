@@ -75,7 +75,8 @@ export default async function RootLayout({
           ? [{ href: "/settings/projects", label: messages.settings.projectsEyebrow, shortLabel: "PM", iconName: "folder-kanban" }]
           : []),
         { href: "/settings/users", label: messages.settings.usersEyebrow, shortLabel: "UM", iconName: "users" },
-        { href: "/settings/embedding-tasks", label: messages.embeddingTasks.eyebrow, shortLabel: "ET", iconName: "database" }
+        { href: "/settings/embedding-tasks", label: messages.embeddingTasks.eyebrow, shortLabel: "ET", iconName: "database" },
+        { href: "/admin/ai-traces", label: messages.aiTracesAdmin.navLabel, shortLabel: "AT", iconName: "activity" }
       ]
     : [];
   const cookieStore = await cookies();
